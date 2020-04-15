@@ -37,9 +37,6 @@
     "doctrine/common": {
         "version": "2.12.0"
     },
-    "doctrine/data-fixtures": {
-        "version": "1.4.2"
-    },
     "doctrine/dbal": {
         "version": "v2.10.1"
     },
@@ -58,16 +55,17 @@
             "src/Repository/.gitignore"
         ]
     },
-    "doctrine/doctrine-fixtures-bundle": {
-        "version": "3.0",
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "1.2",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "3.0",
-            "ref": "fc52d86631a6dfd9fdf3381d0b7e3df2069e51b3"
+            "version": "1.2",
+            "ref": "c1431086fec31f17fbcfe6d6d7e92059458facc1"
         },
         "files": [
-            "src/DataFixtures/AppFixtures.php"
+            "config/packages/doctrine_migrations.yaml",
+            "src/Migrations/.gitignore"
         ]
     },
     "doctrine/event-manager": {
@@ -81,6 +79,9 @@
     },
     "doctrine/lexer": {
         "version": "1.2.0"
+    },
+    "doctrine/migrations": {
+        "version": "2.2.1"
     },
     "doctrine/orm": {
         "version": "v2.7.2"
@@ -100,6 +101,24 @@
     "jms/metadata": {
         "version": "2.1.0"
     },
+    "lcobucci/jwt": {
+        "version": "3.3.1"
+    },
+    "lexik/jwt-authentication-bundle": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "5b2157bcd5778166a5696e42f552ad36529a07a6"
+        },
+        "files": [
+            "config/packages/lexik_jwt_authentication.yaml"
+        ]
+    },
+    "namshi/jose": {
+        "version": "7.2.3"
+    },
     "nelmio/cors-bundle": {
         "version": "1.5",
         "recipe": {
@@ -114,6 +133,9 @@
     },
     "ocramius/package-versions": {
         "version": "1.4.2"
+    },
+    "ocramius/proxy-manager": {
+        "version": "2.2.3"
     },
     "php": {
         "version": "7.2"
@@ -247,6 +269,9 @@
     "symfony/options-resolver": {
         "version": "v5.0.7"
     },
+    "symfony/orm-pack": {
+        "version": "v1.0.8"
+    },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.15.0"
     },
@@ -315,6 +340,9 @@
     "symfony/service-contracts": {
         "version": "v2.0.1"
     },
+    "symfony/stopwatch": {
+        "version": "v5.0.7"
+    },
     "symfony/string": {
         "version": "v5.0.7"
     },
@@ -380,5 +408,11 @@
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"
+    },
+    "zendframework/zend-code": {
+        "version": "3.4.1"
+    },
+    "zendframework/zend-eventmanager": {
+        "version": "3.2.1"
     }
 }
