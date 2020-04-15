@@ -11,7 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Comment
- * @ApiResource
+ * @ApiResource(
+ *     itemOperations={"get"},
+ *     collectionOperations={"get"}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
 class Comment implements AuthoredEntityInterface, PublishedDateEntityInterface

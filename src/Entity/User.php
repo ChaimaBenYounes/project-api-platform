@@ -16,8 +16,15 @@ use App\Controller\ResetPasswordAction;
 
 /**
  * Class User
- * @ApiResource
+ * @ApiResource(
+ *     itemOperations={"get"},
+ *     collectionOperations={},
+ *     normalizationContext={
+ *          "groups"={"read"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"usename", "email"})
  */
 class User implements UserInterface
 {
@@ -33,13 +40,13 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get", "get-blog-post-with-author", "get-comment-with-author"})
+     * @Groups({"read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get", "post", "get-comment-with-author", "get-blog-post-with-author"})
+     * @Groups({"read"})
      * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=6, max=255, groups={"post"})
      */
@@ -47,12 +54,11 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post"})
+     * @Groups({"read"})
      * @Assert\NotBlank(groups={"post"})
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
      *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter",
-     *     groups={"post"}
      * )
      */
     private $password;
@@ -69,37 +75,8 @@ class User implements UserInterface
     private $retypedPassword;
 
     /**
-     * @Groups({"put-reset-password"})
-     * @Assert\NotBlank(groups={"put-reset-password"})
-     * @Assert\Regex(
-     *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter",
-     *     groups={"put-reset-password"}
-     * )
-     */
-    private $newPassword;
-
-    /**
-     * @Groups({"put-reset-password"})
-     * @Assert\NotBlank(groups={"put-reset-password"})
-     * @Assert\Expression(
-     *     "this.getNewPassword() === this.getNewRetypedPassword()",
-     *     message="Passwords does not match",
-     *     groups={"put-reset-password"}
-     * )
-     */
-    private $newRetypedPassword;
-
-    /**
-     * @Groups({"put-reset-password"})
-     * @Assert\NotBlank(groups={"put-reset-password"})
-     * @UserPassword(groups={"put-reset-password"})
-     */
-    private $oldPassword;
-
-    /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get", "post", "put", "get-comment-with-author", "get-blog-post-with-author"})
+     * @Groups({"read"})
      * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=5, max=255, groups={"post", "put"})
      */
@@ -107,7 +84,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post", "put", "get-admin", "get-owner"})
+     * @Groups({"read"})
      * @Assert\NotBlank(groups={"post"})
      * @Assert\Email(groups={"post", "put"})
      * @Assert\Length(min=6, max=255, groups={"post", "put"})
@@ -116,19 +93,19 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\BlogPost", mappedBy="author")
-     * @Groups({"get"})
+     * @Groups({"read"})
      */
     private $posts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
-     * @Groups({"get"})
+     * @Groups({"read"})
      */
     private $comments;
 
     /**
      * @ORM\Column(type="simple_array", length=200)
-     * @Groups({"get-admin", "get-owner"})
+     * @Groups({"read"})
      */
     private $roles;
 
@@ -243,46 +220,6 @@ class User implements UserInterface
     public function eraseCredentials()
     {
 
-    }
-
-    public function getRetypedPassword()
-    {
-        return $this->retypedPassword;
-    }
-
-    public function setRetypedPassword($retypedPassword): void
-    {
-        $this->retypedPassword = $retypedPassword;
-    }
-
-    public function getNewPassword(): ?string
-    {
-        return $this->newPassword;
-    }
-
-    public function setNewPassword($newPassword): void
-    {
-        $this->newPassword = $newPassword;
-    }
-
-    public function getNewRetypedPassword(): ?string
-    {
-        return $this->newRetypedPassword;
-    }
-
-    public function setNewRetypedPassword($newRetypedPassword): void
-    {
-        $this->newRetypedPassword = $newRetypedPassword;
-    }
-
-    public function getOldPassword(): ?string
-    {
-        return $this->oldPassword;
-    }
-
-    public function setOldPassword($oldPassword): void
-    {
-        $this->oldPassword = $oldPassword;
     }
 
     public function getPasswordChangeDate()

@@ -20,7 +20,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class BlogPost
- * @ApiResource
+ * @ApiResource(
+ *     itemOperations={"get"},
+ *     collectionOperations={"get"}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\BlogPostRepository")
  */
 class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
