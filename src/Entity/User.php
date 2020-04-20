@@ -17,14 +17,34 @@ use App\Controller\ResetPasswordAction;
 /**
  * Class User
  * @ApiResource(
- *     itemOperations={"get"},
- *     collectionOperations={},
- *     normalizationContext={
- *          "groups"={"read"}
- *     }
+ *     itemOperations={
+ *          "get" = {
+ *                  "access_control"="is_granted('IS_AUTHENTICATED_FULLY')",
+ *                  "normalization_context"={
+ *                      "groups"={"get"}
+ *                  }
+ *          },
+ *          "put" = {
+ *                 "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object == user ",
+ *                 "denormalization_context"={
+ *                      "groups"={"put"}
+ *                  },
+ *                 "normalization_context"={
+ *                      "groups"={"get"}
+ *                  }
+ *           },
+ *     },
+ *     collectionOperations={
+ *          "post" = {
+ *                  "denormalization_context"={
+ *                      "groups"={"post"}
+ *                  }
+ *          }
+ *     },
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"usename", "email"})
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface
 {
@@ -40,13 +60,13 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read"})
+     * @Groups({"get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read"})
+     * @Groups({"get", "post", "get-comment-with-author", "get-blog-post-with-author"})
      * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=6, max=255, groups={"post"})
      */
@@ -54,8 +74,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read"})
-     * @Assert\NotBlank(groups={"post"})
+     * @Groups({"put", "post"})
+     * @Assert\NotBlank()
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
      *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter",
@@ -64,10 +84,10 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @Groups({"post"})
+     * @Groups({"put", "post"})
      * @Assert\NotBlank(groups={"post"})
      * @Assert\Expression(
-     *     "this.getPassword() === this.getRetypedPassword()",
+     *     "this.getPassword() != this.getRetypedPassword()",
      *     message="Passwords does not match",
      *     groups={"post"}
      * )
@@ -76,7 +96,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read"})
+     * @Groups({"get", "post", "put", "get-comment-with-author", "get-blog-post-with-author"})
      * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=5, max=255, groups={"post", "put"})
      */
@@ -84,7 +104,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read"})
+     * @Groups({"post", "get"})
      * @Assert\NotBlank(groups={"post"})
      * @Assert\Email(groups={"post", "put"})
      * @Assert\Length(min=6, max=255, groups={"post", "put"})
@@ -93,19 +113,19 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\BlogPost", mappedBy="author")
-     * @Groups({"read"})
+     * @Groups({"get"})
      */
     private $posts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
-     * @Groups({"read"})
+     * @Groups({"get"})
      */
     private $comments;
 
     /**
      * @ORM\Column(type="simple_array", length=200)
-     * @Groups({"read"})
+     * @Groups({"get"})
      */
     private $roles;
 
@@ -230,6 +250,18 @@ class User implements UserInterface
     public function setPasswordChangeDate($passwordChangeDate): void
     {
         $this->passwordChangeDate = $passwordChangeDate;
+    }
+
+    public function getRetypedPassword(): ?string
+    {
+        return $this->retypedPassword;
+    }
+
+    public function setRetypedPassword(string $retypedPassword): self
+    {
+        $this->retypedPassword = $retypedPassword;
+
+        return $this;
     }
 
     public function getEnabled()

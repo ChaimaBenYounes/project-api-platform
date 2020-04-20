@@ -55,19 +55,6 @@
             "src/Repository/.gitignore"
         ]
     },
-    "doctrine/doctrine-migrations-bundle": {
-        "version": "1.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.2",
-            "ref": "c1431086fec31f17fbcfe6d6d7e92059458facc1"
-        },
-        "files": [
-            "config/packages/doctrine_migrations.yaml",
-            "src/Migrations/.gitignore"
-        ]
-    },
     "doctrine/event-manager": {
         "version": "1.1.0"
     },
@@ -80,9 +67,6 @@
     "doctrine/lexer": {
         "version": "1.2.0"
     },
-    "doctrine/migrations": {
-        "version": "2.2.1"
-    },
     "doctrine/orm": {
         "version": "v2.7.2"
     },
@@ -94,6 +78,9 @@
     },
     "fig/link-util": {
         "version": "1.1.0"
+    },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -131,11 +118,11 @@
             "config/packages/nelmio_cors.yaml"
         ]
     },
+    "nikic/php-parser": {
+        "version": "v4.4.0"
+    },
     "ocramius/package-versions": {
         "version": "1.4.2"
-    },
-    "ocramius/proxy-manager": {
-        "version": "2.2.3"
     },
     "php": {
         "version": "7.2"
@@ -263,14 +250,20 @@
     "symfony/intl": {
         "version": "v5.0.7"
     },
+    "symfony/maker-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
+    },
     "symfony/mime": {
         "version": "v5.0.5"
     },
     "symfony/options-resolver": {
         "version": "v5.0.7"
-    },
-    "symfony/orm-pack": {
-        "version": "v1.0.8"
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.15.0"
@@ -340,9 +333,6 @@
     "symfony/service-contracts": {
         "version": "v2.0.1"
     },
-    "symfony/stopwatch": {
-        "version": "v5.0.7"
-    },
     "symfony/string": {
         "version": "v5.0.7"
     },
@@ -408,11 +398,5 @@
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"
-    },
-    "zendframework/zend-code": {
-        "version": "3.4.1"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     }
 }

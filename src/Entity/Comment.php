@@ -12,8 +12,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class Comment
  * @ApiResource(
- *     itemOperations={"get"},
- *     collectionOperations={"get"}
+ *     itemOperations={
+ *          "get",
+ *          "put" = {
+ *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object.getAuthor() == user "
+ *           }
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
+ *           },
+ *          "api_blog_posts_comments_get_subresource"={
+ *               "normalization_context"={
+ *                      "groups"={"get-comment-with-author"}
+ *                  }
+ *           }
+ *     },
+ *     denormalizationContext={
+ *          "groups"={"post"}
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */

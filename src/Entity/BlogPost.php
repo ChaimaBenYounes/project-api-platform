@@ -21,8 +21,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class BlogPost
  * @ApiResource(
- *     itemOperations={"get"},
- *     collectionOperations={"get"}
+ *     itemOperations={
+ *           "get"={
+ *             "normalization_context"={
+ *                 "groups"={"get-blog-post-with-author"}
+ *             }
+ *          },
+ *          "put" = {
+ *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object.getAuthor() == user "
+ *           }
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
+ *           }
+ *     },
+ *     denormalizationContext={
+ *          "groups"={"post"}
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\BlogPostRepository")
  */
@@ -62,6 +79,7 @@ class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
+     * @ApiSubresource()
      * @Groups({"get-blog-post-with-author"})
      */
     private $author;
