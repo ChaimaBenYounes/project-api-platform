@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 use App\Entity\BlogPost;
 use App\Entity\Comment;
 use App\Entity\User;
-//use App\Security\TokenGenerator;
+use App\Security\TokenGenerator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -77,13 +77,13 @@ class AppFixtures extends Fixture
     private $tokenGenerator;
 
     public function __construct(
-        UserPasswordEncoderInterface $passwordEncoder/*,
-        TokenGenerator $tokenGenerator*/
+        UserPasswordEncoderInterface $passwordEncoder,
+        TokenGenerator $tokenGenerator
     )
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->faker = \Faker\Factory::create();
-        //$this->tokenGenerator = $tokenGenerator;
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     /**
@@ -156,9 +156,9 @@ class AppFixtures extends Fixture
             $user->setEnabled($userFixture['enabled']);
 
             if (!$userFixture['enabled']) {
-                /*$user->setConfirmationToken(
+                $user->setConfirmationToken(
                     $this->tokenGenerator->getRandomSecureToken()
-                );*/
+                );
             }
 
             $this->addReference('user_'.$userFixture['username'], $user);
